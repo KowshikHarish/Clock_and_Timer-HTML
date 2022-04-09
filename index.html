@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="startTime()">
+    <br><br>
+    <div id="time"></div>
+    <p id="date_day"></p> 
+    <br><br><br>
+    <div align='center'>
+        <table style="color: white;padding: 2px;border-spacing: 25px;">
+            <tr>
+                <td><b>Hours:</b></td>
+                <td><p id="hours"></p></td>
+                <td><b>Minutes:</b></td>
+                <td><p id="minutes"></p></td>
+                <td><b>Seconds:</b></td>
+                <td><p id="seconds"></p></td>
+            </tr>
+        </table>
+        <table style="color: white;padding: 2px;border-spacing: 30px;">
+            <tr>
+                <td><b>Date:</b></td>
+                <td><p id="date"> </p></td>
+                <td><b>Month:</b></td>
+                <td><p id="month"></p></td>
+                <td><b>Year:</b></td>
+                <td><p id="year"></p></td>
+                <td><b>Day:</b></td>
+                <td><p id="day"></p></td>
+            </tr>            
+        </table>     
+    </div>  
+    <div id="txt"></div>   
+
+<script>
+    const d = new Date();
+    document.getElementById("year").innerHTML = d.getFullYear();
+    document.getElementById("month").innerHTML = d.getMonth() + 1;
+    document.getElementById("date").innerHTML = d.getDate();
+    const weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+    let day = weekday[d.getDay()];
+    document.getElementById("day").innerHTML = day;    
+    document.getElementById("hours").innerHTML = d.getHours();
+    document.getElementById("minutes").innerHTML = d.getMinutes();
+    document.getElementById("seconds").innerHTML = d.getSeconds();
+    document.getElementById("date_day").innerHTML = d.toDateString();
+    function startTime() 
+    {
+    const today = new Date();
+    let h = today.getHours();
+    let m = today.getMinutes();
+    let s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('time').innerHTML =  h + ":" + m + ":" + s;
+    setTimeout(startTime, 1000);
+    }
+    function checkTime(i) 
+    {
+    if (i < 10) {i = "0" + i};  
+    return i;
+    }       
+</script>
+
+<br><br><br>
+
+<div>
+    <div class="wrapper">
+      <div class="time">
+        <span class="hour">00</span>
+        <span class="colon">:</span>
+        <span class="minute">00</span>
+        <span class="colon">:</span>
+        <span class="second">00</span>
+        <span class="colon ms-colon">:</span>
+        <span class="millisecond">00</span>
+      </div>
+      <br>
+      <div class="buttons">
+        <button class="start">Start</button>
+        <button class="pause">Pause</button>
+        <button class="stop">Stop</button>
+      </div>
+    </div>
+    
+    <script>
+    let hr = min = sec = ms = "0" + 0,
+    startTimer;  
+    const startBtn = document.querySelector(".start"),
+    pauseBtn = document.querySelector(".pause"),
+    stopBtn = document.querySelector(".stop");  
+    startBtn.addEventListener("click", start);
+    pauseBtn.addEventListener("click", pause);
+    stopBtn.addEventListener("click", stop);  
+    function start() {
+    startBtn.classList.add("active");
+    pauseBtn.classList.remove("stopActive");  
+    startTimer = setInterval(()=>{
+        ms++
+        ms = ms < 10 ? "0" + ms : ms;  
+        if(ms == 100){
+          sec++;
+          sec = sec < 10 ? "0" + sec : sec;
+          ms = "0" + 0;
+        }
+        if(sec == 60){
+          min++;
+          min = min < 10 ? "0" + min : min;
+          sec = "0" + 0;
+        }
+        if(min == 60){
+          hr++;
+          hr = hr < 10 ? "0" + hr : hr;
+          min = "0" + 0;
+        }
+        putValue();
+      },10);   
+    }  
+    function pause() 
+    {
+      startBtn.classList.remove("active");
+      pauseBtn.classList.add("stopActive");
+      clearInterval(startTimer);
+    }
+    function stop() 
+    {
+      startBtn.classList.remove("active");
+      pauseBtn.classList.remove("stopActive");
+      clearInterval(startTimer);
+      hr = min = sec = ms = "0" + 0;
+      putValue();
+    }  
+    function putValue() 
+    {
+      document.querySelector(".millisecond").innerText = ms;
+      document.querySelector(".second").innerText = sec;
+      document.querySelector(".minute").innerText = min;
+      document.querySelector(".hour").innerText = hr;
+    }
+   </script>
+   </div>    
+</body>
+</html>
